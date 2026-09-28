@@ -1,0 +1,79 @@
+.textButtonPrimary {
+  background-color: #ebebeb;
+  color: black;
+  font-family: 'Quicksand', sans-serif;
+  border-radius: 0 30px 30px 0;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  gap: 8px;
+}
+
+.textButtonPrimary:hover {
+  background-color: #062e3f;
+  color: #ffffff;
+}
+
+.textButtonPrimary:disabled {
+  background-color: #ebebeb;
+  color: #a9a9a9;
+  cursor: not-allowed;
+}
+
+.textButtonSecondary {
+  background-color: #ebebeb;
+  color: rgb(0, 0, 0);
+  font-family: 'Quicksand', sans-serif;
+  border-radius: 30px;
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.textButtonSecondary:hover {
+  background-color: #062e3f;
+  color: #ffffff;
+}
+
+.textButtonSecondary:disabled {
+  background-color: #ebebeb;
+  color: #a9a9a9;
+  cursor: not-allowed;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.iconButton {
+  background-color: #394046;
+  border-radius: 50%;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  cursor: pointer;
+  border: none;
+}
+
+.iconButton svg,
+.iconButton .icon {
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
+.iconButton:hover {
+  background-color: #062e3f;
+}
+
+.deleteButton:hover {
+  background-color: #690000;
+}

@@ -1,0 +1,8 @@
+.currentDateText {
+  width: 100%;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 500;
+  padding: 0.5rem;
+  margin-bottom: 10px;
+}

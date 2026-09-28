@@ -1,0 +1,43 @@
+.selectContainer {
+  background-color: #394046;
+  display: flex;
+  align-items: center;
+  border-radius: 30px;
+  width: fit-content;
+  margin: 10px 0;
+  padding: 5px 10px;
+  border: 1px solid #394046;
+}
+
+.selectContainer:hover {
+  background-color: #062e3f;
+}
+
+.selectIcon {
+  margin-right: 2px;
+  width: 20px;
+  height: 20px;
+}
+
+.selectSection {
+  background-color: transparent;
+  font-family: 'Quicksand', sans-serif;
+  text-align: center;
+  width: 100%;
+  border: none;
+  font-size: 16px;
+  color: #a9a9a9;
+  cursor: pointer;
+  appearance: none;
+  padding: 5px 0;
+}
+
+.selectSection:focus {
+  outline: none;
+}
+
+.selectSection option {
+  background-color: #1a1a1a;
+  color: #d3d3d3;
+  cursor: pointer;
+}

@@ -6,6 +6,6 @@ import './main.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <TaskProvider>
-    TodoApp />
+    <TodoApp />
   </TaskProvider>
 );
