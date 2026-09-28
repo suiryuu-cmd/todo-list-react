@@ -1,9 +1,6 @@
 import React from 'react';
 import type { Task } from '../../types';
-import { Button } from '../Button';
-import CheckIcon from '../../assets/icon/check.svg';
-import CrossIcon from '../../assets/icon/cross.svg';
-import DeleteIcon from '../../assets/icon/trash.svg';
+import styles from './index.module.css';
 
 interface TaskItemProps {
   task: Task;
@@ -16,26 +13,27 @@ const formatDate = (iso: string) =>
 
 export const TaskItem: React.FC<TaskItemProps> = ({ task, toggleTask, removeTask }) => {
   return (
-    <li>
-      <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
-        {task.name}
-        {task.completed && ` - Completed on ${formatDate(task.dateCompleted)}`}
-      </span>
-      <div>
-        <Button
-          onClick={() => toggleTask(task.id)}
-          icon={task.completed ? CrossIcon : CheckIcon}
-          label={task.completed ? 'Mark as not done' : 'Mark as done'}
-          variant="icon"
+    <li className={task.completed ? `${styles.item} ${styles.completed}` : styles.item}>
+      <label className={styles.main}>
+        <input
+          type="checkbox"
+          className={styles.check}
+          checked={task.completed}
+          onChange={() => toggleTask(task.id)}
         />
-        <Button
-          onClick={() => removeTask(task.id)}
-          icon={DeleteIcon}
-          label="Delete task"
-          variant="icon"
-          deleteButton
-        />
-      </div>
+        <span className={styles.text}>
+          <span className={styles.name}>{task.name}</span>
+          {task.completed && <span className={styles.meta}>Done {formatDate(task.dateCompleted)}</span>}
+        </span>
+      </label>
+      <button
+        type="button"
+        className={styles.delete}
+        onClick={() => removeTask(task.id)}
+        aria-label={`Delete “${task.name}”`}
+      >
+        <span className={styles.trash} aria-hidden="true" />
+      </button>
     </li>
   );
 };

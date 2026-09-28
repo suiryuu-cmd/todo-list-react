@@ -11,6 +11,8 @@ export interface TaskContextType {
     removeTask: (id: number) => void;
     toggleTask: (id: number) => void;
     clearAllTasks: () => void;
+    removed: Task[];
+    undoRemove: () => void;
 }
 
 export const TaskContext = createContext<TaskContextType | undefined>(undefined);

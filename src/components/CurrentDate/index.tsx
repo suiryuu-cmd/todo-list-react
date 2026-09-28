@@ -2,11 +2,13 @@ import React from 'react';
 import styles from './index.module.css';
 
 export const CurrentDate: React.FC = () => {
-  const formattedDate = new Date().toLocaleDateString([], {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
+  const now = new Date();
 
-  return <p className={styles.currentDateText}>{formattedDate}</p>;
+  return (
+    <p className={styles.date}>
+      <time dateTime={now.toISOString().slice(0, 10)}>
+        {now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}
+      </time>
+    </p>
+  );
 };

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Button } from '../Button';
 import { useTasksContext } from '../../context/tasksContext';
 import styles from './index.module.css';
 
@@ -14,17 +13,21 @@ export const TaskForm: React.FC = () => {
   };
 
   return (
-    <form className={styles.formContainer} onSubmit={handleAddTask}>
+    <form className={styles.form} onSubmit={handleAddTask}>
       <input
+        className={styles.input}
         type="text"
+        name="task"
+        autoComplete="off"
+        maxLength={200}
         aria-label="New task"
+        placeholder="Add a task…"
         value={taskName}
         onChange={e => setTaskName(e.target.value)}
-        placeholder="Add a task to do."
       />
-      <Button type="submit" disabled={taskName.trim() === ''}>
+      <button className={styles.submit} type="submit" disabled={taskName.trim() === ''}>
         Do it.
-      </Button>
+      </button>
     </form>
   );
 };

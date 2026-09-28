@@ -1,25 +1,30 @@
 import React from 'react';
 import styles from './index.module.css';
-import FilterIcon from '../../assets/icon/filter.svg';
 import { useTasksContext } from '../../context/tasksContext';
 import type { Filter } from '../../context/tasksContext';
+
+const OPTIONS: { value: Filter; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'incomplete', label: 'To do' },
+  { value: 'completed', label: 'Done' },
+];
 
 export const TaskFilter: React.FC = () => {
   const { filter, setFilter } = useTasksContext();
 
   return (
-    <div className={styles.selectContainer}>
-      <img className={styles.selectIcon} src={FilterIcon} alt="" />
-      <select
-        className={styles.selectSection}
-        aria-label="Filter tasks"
-        value={filter}
-        onChange={e => setFilter(e.target.value as Filter)}
-      >
-        <option value="all">All</option>
-        <option value="completed">Completed</option>
-        <option value="incomplete">Incomplete</option>
-      </select>
+    <div className={styles.group} role="group" aria-label="Filter tasks">
+      {OPTIONS.map(option => (
+        <button
+          key={option.value}
+          type="button"
+          className={styles.option}
+          aria-pressed={filter === option.value}
+          onClick={() => setFilter(option.value)}
+        >
+          {option.label}
+        </button>
+      ))}
     </div>
   );
 };

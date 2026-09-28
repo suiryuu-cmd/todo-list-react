@@ -1,0 +1,111 @@
+.item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-right: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0 12px 16px;
+  cursor: pointer;
+}
+
+.check {
+  appearance: none;
+  flex-shrink: 0;
+  display: grid;
+  place-content: center;
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgb(238 242 243 / 0.4);
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease;
+}
+
+.check::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  background: var(--accent-ink);
+  mask: url('../../assets/icon/check.svg') center / contain no-repeat;
+  transform: scale(0);
+  transition: transform 280ms var(--ease-out);
+}
+
+.main:hover .check {
+  border-color: var(--accent);
+}
+
+.check:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.check:checked::after {
+  transform: scale(1);
+}
+
+.check:focus-visible {
+  outline-offset: 3px;
+}
+
+.text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.name {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+  text-decoration: line-through;
+  text-decoration-color: transparent;
+  transition:
+    color 200ms ease,
+    text-decoration-color 200ms ease;
+}
+
+.completed .name {
+  color: var(--muted);
+  text-decoration-color: var(--muted);
+}
+
+.meta {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.delete {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  color: var(--muted);
+}
+
+.delete:hover {
+  color: var(--danger);
+  background: rgb(242 104 108 / 0.1);
+}
+
+.trash {
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  mask: url('../../assets/icon/trash.svg') center / contain no-repeat;
+}

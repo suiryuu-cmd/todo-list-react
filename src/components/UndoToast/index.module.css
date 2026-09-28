@@ -1,0 +1,43 @@
+.region {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 6px 6px 18px;
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 32px rgb(3 10 13 / 0.55);
+  font-weight: 500;
+  animation: rise 320ms var(--ease-out);
+}
+
+.undo {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 10px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.undo:hover {
+  background: rgb(125 211 192 / 0.12);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+}

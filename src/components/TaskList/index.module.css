@@ -1,20 +1,68 @@
-.taskSection {
-  width: 100%;
+.section {
+  margin-top: 36px;
 }
 
-.taskHeader {
+.header {
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  padding: 5px;
-}
-
-.taskHeaderSubTitle {
-  margin-left: 20px;
-}
-
-.taskHeaderActions {
-  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  gap: 12px 16px;
+}
+
+.status {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.track {
+  height: 4px;
+  margin: 16px 0 20px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left;
+  transition: transform 600ms var(--ease-out);
+}
+
+.list {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.empty,
+.filterEmpty {
+  color: var(--muted);
+  font-size: 1.0625rem;
+}
+
+.empty {
+  margin-top: 36px;
+}
+
+.filterEmpty {
+  padding: 24px 0;
+}
+
+.clear {
+  display: block;
+  min-height: 44px;
+  margin: 20px 0 0 auto;
+  padding: 0 14px;
+  border-radius: 10px;
+  color: var(--danger);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.clear:hover {
+  background: rgb(242 104 108 / 0.1);
 }
