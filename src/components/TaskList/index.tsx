@@ -5,7 +5,7 @@ import { EmptyState } from './EmptyState';
 import { useTasksContext } from '../../context/tasksContext';
 
 export const TaskList: React.FC = () => {
-  const { tasks, clearAllTasks, toggleTask, removeTask } = useTasksContext();
+  const { tasks, clearAllTasks } = useTasksContext();
   const [showDone, setShowDone] = useState(true);
 
   if (tasks.length === 0) return <EmptyState />;
@@ -35,7 +35,7 @@ export const TaskList: React.FC = () => {
       {todo.length > 0 ? (
         <ul className={styles.list}>
           {todo.map(task => (
-            <TaskItem key={task.id} task={task} toggleTask={toggleTask} removeTask={removeTask} />
+            <TaskItem key={task.id} task={task} />
           ))}
         </ul>
       ) : (
@@ -59,7 +59,7 @@ export const TaskList: React.FC = () => {
           {showDone && (
             <ul id="done-list" className={styles.list}>
               {done.map(task => (
-                <TaskItem key={task.id} task={task} toggleTask={toggleTask} removeTask={removeTask} />
+                <TaskItem key={task.id} task={task} />
               ))}
             </ul>
           )}

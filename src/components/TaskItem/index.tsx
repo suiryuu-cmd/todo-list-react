@@ -1,17 +1,14 @@
 import React from 'react';
 import type { Task } from '../../types';
+import { useTasksContext } from '../../context/tasksContext';
 import styles from './index.module.css';
-
-interface TaskItemProps {
-  task: Task;
-  toggleTask: (id: number) => void;
-  removeTask: (id: number) => void;
-}
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
 
-export const TaskItem: React.FC<TaskItemProps> = ({ task, toggleTask, removeTask }) => {
+export const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
+  const { toggleTask, removeTask } = useTasksContext();
+
   return (
     <li
       className={task.completed ? `${styles.item} ${styles.completed}` : styles.item}

@@ -5,10 +5,22 @@ import { TaskContext } from './tasksContext';
 
 const UNDO_MS = 5000;
 
+// localStorage can be edited by the user or an extension, so every item is checked before it is rendered.
+const isTask = (value: unknown): value is Task => {
+    if (typeof value !== 'object' || value === null) return false;
+    const { id, name, completed, dateCompleted } = value as Record<string, unknown>;
+    return (
+        typeof id === 'number' &&
+        typeof name === 'string' &&
+        typeof completed === 'boolean' &&
+        typeof dateCompleted === 'string'
+    );
+};
+
 const loadTasks = (): Task[] => {
     try {
         const stored = JSON.parse(localStorage.getItem('tasks') || '[]');
-        return Array.isArray(stored) ? stored : [];
+        return Array.isArray(stored) ? stored.filter(isTask) : [];
     } catch (error) {
         console.error('Failed to load tasks:', error);
         return [];
@@ -19,7 +31,9 @@ const loadTasks = (): Task[] => {
 const withTransition = (update: () => void) => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!('startViewTransition' in document) || reduceMotion) return update();
-    document.startViewTransition(() => flushSync(update));
+    // The browser aborts the animation (not the update) when the tab is hidden or another
+    // transition starts; swallow that rejection so it does not surface as an uncaught error.
+    document.startViewTransition(() => flushSync(update)).ready.catch(() => {});
 };
 
 export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -41,7 +55,11 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const name = taskName.trim();
         if (!name) return;
         withTransition(() =>
-            setTasks((prev) => [...prev, { id: Date.now(), name, dateCompleted: '', completed: false }])
+            setTasks((prev) => {
+                // ids double as creation order; never reuse one added in the same millisecond
+                const id = Math.max(Date.now(), (prev.at(-1)?.id ?? 0) + 1);
+                return [...prev, { id, name, dateCompleted: '', completed: false }];
+            })
         );
     };
 

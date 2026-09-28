@@ -18,6 +18,13 @@
   text-wrap: balance;
 }
 
+.date {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
 .done {
   color: var(--accent);
   animation: glow 1.4s var(--ease-out);

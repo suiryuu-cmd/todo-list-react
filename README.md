@@ -1,75 +1,42 @@
-# React + TypeScript + Vite
+# Just do it!
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A single-screen daily to-do list that celebrates finishing things. Add a task, tick it off, and watch it slide into the "Done" pile. When everything is done, the title turns into **"Done it."**
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Add, complete and delete tasks; everything is saved in `localStorage`
+- Undo for 5 seconds after deleting a task or clearing the list
+- Completed tasks move to a collapsible "Done" group, with a progress bar showing how far along the day is
+- Empty state with one-tap suggestions
+- Smooth list animations using the native View Transitions API (no animation library)
+- Keyboard and screen reader friendly: real checkboxes, visible focus, 44 px touch targets, live status updates
+- Respects `prefers-reduced-motion`
 
-## React Compiler
+## Tech stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React 19, TypeScript, Vite, CSS Modules. Fonts (Quicksand and Bricolage Grotesque) are self-hosted via Fontsource. No backend, no state library.
 
-## Expanding the ESLint configuration
+## Getting started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Other scripts:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+npm run lint     # ESLint
+npm run build    # type-check and production build
+npm run preview  # serve the production build
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project structure
 
+```
+src/
+├── context/       # task state, localStorage persistence, undo, view transitions
+├── components/    # TaskForm, TaskList (+ EmptyState), TaskItem, UndoToast
+├── TodoList.tsx   # page layout
+└── main.css       # design tokens and global styles
 ```
