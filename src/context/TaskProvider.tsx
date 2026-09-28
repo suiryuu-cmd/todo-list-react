@@ -1,10 +1,11 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { Task } from '../types';
 import { TaskContext, type Filter } from './tasksContext';
 
 const loadTasks = (): Task[] => {
     try {
-        return JSON.parse(localStorage.getItem('tasks') || '[]');
+        const stored = JSON.parse(localStorage.getItem('tasks') || '[]');
+        return Array.isArray(stored) ? stored : [];
     } catch (error) {
         console.error('Failed to load tasks:', error);
         return [];
@@ -13,73 +14,39 @@ const loadTasks = (): Task[] => {
 
 export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [tasks, setTasks] = useState<Task[]>(loadTasks);
-    const [filterTasks, setFilterTasks] = useState<Filter>('all');
+    const [filter, setFilter] = useState<Filter>('all');
 
     useEffect(() => {
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }, [tasks]);
 
-    const addTask = useCallback((taskName: string) => {
-        if (taskName.trim()) {
-            const newTask= {
-                id: Date.now(),
-                name: taskName,
-                dateCompleted: '',
-                completed: false,
-            };
-            setTasks((prevTasks) => [...prevTasks, newTask]);
-        }
-    }, []);
+    const addTask = (taskName: string) => {
+        const name = taskName.trim();
+        if (!name) return;
+        setTasks((prev) => [...prev, { id: Date.now(), name, dateCompleted: '', completed: false }]);
+    };
 
-    const removeTask = useCallback((id: number) => {
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-    }, []);
+    const removeTask = (id: number) => {
+        setTasks((prev) => prev.filter((task) => task.id !== id));
+    };
 
-    const toggleTask = useCallback((id: number) => {
-        setTasks((prevTasks) =>
-            prevTasks.map((task) =>
-                task.id === id ? { ...task, completed: !task.completed, dateCompleted: !task.completed ? new Date().toISOString() : '' } : task
+    const toggleTask = (id: number) => {
+        setTasks((prev) =>
+            prev.map((task) =>
+                task.id === id
+                    ? { ...task, completed: !task.completed, dateCompleted: task.completed ? '' : new Date().toISOString() }
+                    : task
             )
         );
-    }, []);
-    
-    const clearAllTasks = useCallback(() => {
-        setTasks([]);
-    }, []);
+    };
 
-    const filteredTasks = useMemo(() => {
-        switch (filterTasks) {
-            case 'completed':
-                return tasks.filter((task) => task.completed);
-            case 'incomplete':
-                return tasks.filter((task) => !task.completed);
-            default:
-                return tasks;
-        }
-    }   , [tasks, filterTasks]);
-
-    const isTaskListEmpty = useMemo(() => tasks.length === 0, [tasks]);
-    const hasPendingTasks = useMemo(
-        () => tasks.some((task) => !task.completed),
-        [tasks]
-    );
+    const clearAllTasks = () => setTasks([]);
 
     return (
         <TaskContext.Provider
-            value={{
-                tasks: filteredTasks,
-                addTask,
-                removeTask,
-                toggleTask,
-                clearAllTasks,
-                filterTasks,
-                setFilterTasks,
-                hasPendingTasks,
-                isTaskListEmpty,
-            }}
+            value={{ tasks, filter, setFilter, addTask, removeTask, toggleTask, clearAllTasks }}
         >
             {children}
         </TaskContext.Provider>
     );
 };
-

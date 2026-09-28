@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from '../../components/Button';
-import { TextInput } from '../../components/TextInput';
+import { Button } from '../Button';
 import { useTasksContext } from '../../context/tasksContext';
 import styles from './index.module.css';
 
@@ -10,24 +9,20 @@ export const TaskForm: React.FC = () => {
 
   const handleAddTask = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (taskName.trim()) {
-      addTask(taskName);
-      setTaskName('');
-    }
+    addTask(taskName);
+    setTaskName('');
   };
 
   return (
     <form className={styles.formContainer} onSubmit={handleAddTask}>
-      <TextInput
+      <input
+        type="text"
+        aria-label="New task"
         value={taskName}
         onChange={e => setTaskName(e.target.value)}
         placeholder="Add a task to do."
       />
-      <Button
-        type="submit"
-        disabled={taskName.trim() === ''}
-        variant="text-primary"
-      >
+      <Button type="submit" disabled={taskName.trim() === ''}>
         Do it.
       </Button>
     </form>

@@ -1,11 +1,9 @@
-// src/components/TaskItem/index.tsx
 import React from 'react';
 import type { Task } from '../../types';
 import { Button } from '../Button';
 import CheckIcon from '../../assets/icon/check.svg';
 import CrossIcon from '../../assets/icon/cross.svg';
 import DeleteIcon from '../../assets/icon/trash.svg';
-import styles from './index.module.css';
 
 interface TaskItemProps {
   task: Task;
@@ -13,30 +11,29 @@ interface TaskItemProps {
   removeTask: (id: number) => void;
 }
 
-export const TaskItem: React.FC<TaskItemProps> = ({
-  task,
-  toggleTask,
-  removeTask,
-}) => {
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+
+export const TaskItem: React.FC<TaskItemProps> = ({ task, toggleTask, removeTask }) => {
   return (
-    <li className={styles.taskItem}>
-      <span
-        style={{ textDecoration: task.completed ? 'line-through' : 'none' }}
-      >
+    <li>
+      <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
         {task.name}
-        {task.completed ? ` - Completed on ${task.dateCompleted}` : ''}
+        {task.completed && ` - Completed on ${formatDate(task.dateCompleted)}`}
       </span>
-      <div className={styles.taskActions}>
+      <div>
         <Button
           onClick={() => toggleTask(task.id)}
           icon={task.completed ? CrossIcon : CheckIcon}
+          label={task.completed ? 'Mark as not done' : 'Mark as done'}
           variant="icon"
         />
         <Button
           onClick={() => removeTask(task.id)}
           icon={DeleteIcon}
+          label="Delete task"
           variant="icon"
-          deleteButton={true}
+          deleteButton
         />
       </div>
     </li>

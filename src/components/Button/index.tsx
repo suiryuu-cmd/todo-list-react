@@ -4,10 +4,11 @@ import styles from './index.module.css';
 interface ButtonProps {
   onClick?: () => void;
   disabled?: boolean;
-  icon?: React.ReactNode;
+  icon?: string;
+  label?: string;
   children?: React.ReactNode;
-  variant?: 'text-primary' | 'text-secondary' | 'icon';
-  type?: 'button' | 'submit' | 'reset';
+  variant?: 'text-primary' | 'icon';
+  type?: 'button' | 'submit';
   deleteButton?: boolean;
 }
 
@@ -16,26 +17,20 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   children,
   icon,
+  label,
   variant = 'text-primary',
+  type = 'button',
   deleteButton,
 }) => {
-  let className =
-    variant === 'icon'
-      ? styles.iconButton
-      : variant === 'text-secondary'
-        ? styles.textButtonSecondary
-        : styles.textButtonPrimary;
-
-  if (deleteButton) {
-    className = `${className} ${styles.deleteButton}`;
-  }
+  const className = [
+    variant === 'icon' ? styles.iconButton : styles.textButtonPrimary,
+    deleteButton && styles.deleteButton,
+  ].filter(Boolean).join(' ');
 
   return (
-    <button className={className} onClick={onClick} disabled={disabled}>
-      {typeof icon === 'string' && (
-        <img className={styles.icon} src={icon} alt="icon" />
-      )}
-      {children && <span className={styles.text}>{children}</span>}
+    <button type={type} className={className} onClick={onClick} disabled={disabled} aria-label={label}>
+      {icon && <img className={styles.icon} src={icon} alt="" />}
+      {children}
     </button>
   );
 };

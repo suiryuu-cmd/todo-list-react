@@ -22,14 +22,14 @@
 
 .formContainer input::placeholder {
   color: #a9a9a9;
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Quicksand Variable', sans-serif;
   font-weight: 300;
 }
 
 .formContainer button {
   padding: 12px 24px;
   font-size: 16px;
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Quicksand Variable', sans-serif;
   font-weight: 500;
   border: none;
   background-color: #ffffff;

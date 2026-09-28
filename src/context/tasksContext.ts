@@ -5,14 +5,12 @@ export type Filter = 'all' | 'completed' | 'incomplete';
 
 export interface TaskContextType {
     tasks: Task[];
+    filter: Filter;
+    setFilter: (filter: Filter) => void;
     addTask: (taskName: string) => void;
     removeTask: (id: number) => void;
     toggleTask: (id: number) => void;
     clearAllTasks: () => void;
-    filterTasks: Filter;
-    setFilterTasks: (filter: Filter) => void;
-    hasPendingTasks: boolean;
-    isTaskListEmpty: boolean;
 }
 
 export const TaskContext = createContext<TaskContextType | undefined>(undefined);
