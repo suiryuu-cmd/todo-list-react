@@ -1,6 +1,6 @@
 // src/components/TaskItem/index.tsx
 import React from 'react';
-import { Task } from '../../types';
+import type { Task } from '../../types';
 import { Button } from '../Button';
 import CheckIcon from '../../assets/icon/check.svg';
 import CrossIcon from '../../assets/icon/cross.svg';

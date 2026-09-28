@@ -7,7 +7,7 @@ interface IProps {
 }
 
 export const Title: React.FC<IProps> = ({ title, level }) => {
-  const Level = level as keyof JSX.IntrinsicElements;
+  const Level = level as keyof React.JSX.IntrinsicElements;
 
   return (
     <div className={styles.wrapper}>

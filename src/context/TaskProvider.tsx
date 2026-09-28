@@ -1,41 +1,20 @@
-import React,{
-    createContext,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-    useCallback,
-} from 'react';
-import { Task } from '../types';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import type { Task } from '../types';
+import { TaskContext, type Filter } from './tasksContext';
 
-interface TaskContextType {
-    tasks: Task[];
-    addTask: (taskName: string) => void;
-    removeTask: (id: number) => void;
-    toggleTask: (id: number) => void;
-    clearAllTasks: () => void;
-    filterTasks: 'all' | 'completed' | 'incomplete';
-    setFilterTasks: (filter: 'all' | 'completed' | 'incomplete') => void;
-    hasPendingTasks: boolean;
-    isTaskListEmpty: boolean;
-}
-
-const TaskContext = createContext<TaskContextType | undefined>(undefined);
+const loadTasks = (): Task[] => {
+    try {
+        return JSON.parse(localStorage.getItem('tasks') || '[]');
+    } catch (error) {
+        console.error('Failed to load tasks:', error);
+        return [];
+    }
+};
 
 export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [tasks, setTasks] = useState<Task[]>([]);
-    const [filterTasks, setFilterTasks] = useState<'all' | 'completed' | 'incomplete'>('all');
+    const [tasks, setTasks] = useState<Task[]>(loadTasks);
+    const [filterTasks, setFilterTasks] = useState<Filter>('all');
 
-    useEffect(() => {
-        try {
-            const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-            setTasks(storedTasks);
-        } catch (error) {
-            console.error('Failed to load tasks:', error);
-            setTasks([]);
-        }
-    }, []);
-    
     useEffect(() => {
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }, [tasks]);
@@ -104,10 +83,3 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 };
 
-export const useTasksContext = () => {
-    const context = useContext(TaskContext);
-    if (!context) {
-        throw new Error('useTasksContext must be used within a TaskProvider');
-    }
-    return context;
-};
