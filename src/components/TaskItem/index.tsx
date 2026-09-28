@@ -13,7 +13,10 @@ const formatDate = (iso: string) =>
 
 export const TaskItem: React.FC<TaskItemProps> = ({ task, toggleTask, removeTask }) => {
   return (
-    <li className={task.completed ? `${styles.item} ${styles.completed}` : styles.item}>
+    <li
+      className={task.completed ? `${styles.item} ${styles.completed}` : styles.item}
+      style={{ viewTransitionName: `task-${task.id}` }}
+    >
       <label className={styles.main}>
         <input
           type="checkbox"

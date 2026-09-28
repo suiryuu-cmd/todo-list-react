@@ -1,29 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './index.module.css';
-import { TaskFilter } from '../TaskFilter';
 import { TaskItem } from '../TaskItem';
+import { EmptyState } from './EmptyState';
 import { useTasksContext } from '../../context/tasksContext';
 
 export const TaskList: React.FC = () => {
-  const { tasks, filter, clearAllTasks, toggleTask, removeTask } = useTasksContext();
+  const { tasks, clearAllTasks, toggleTask, removeTask } = useTasksContext();
+  const [showDone, setShowDone] = useState(true);
 
-  if (tasks.length === 0) {
-    return <p className={styles.empty}>Nothing yet. What’s first?</p>;
-  }
+  if (tasks.length === 0) return <EmptyState />;
 
-  const done = tasks.filter(task => task.completed).length;
-  const left = tasks.length - done;
-  const visibleTasks =
-    filter === 'all' ? tasks : tasks.filter(task => task.completed === (filter === 'completed'));
+  const todo = tasks.filter(task => !task.completed);
+  const done = tasks.filter(task => task.completed);
 
   return (
     <section className={styles.section} aria-labelledby="task-status">
-      <div className={styles.header}>
-        <h2 id="task-status" className={styles.status} aria-live="polite">
-          {left > 0 ? `${left} left · ${done} done` : `All ${tasks.length} done`}
-        </h2>
-        <TaskFilter />
-      </div>
+      <h2 id="task-status" className={styles.status} aria-live="polite">
+        {todo.length > 0 ? `${todo.length} left · ${done.length} done` : `All ${tasks.length} done`}
+      </h2>
 
       <div
         className={styles.track}
@@ -31,21 +25,45 @@ export const TaskList: React.FC = () => {
         aria-label="Progress"
         aria-valuemin={0}
         aria-valuemax={tasks.length}
-        aria-valuenow={done}
+        aria-valuenow={done.length}
       >
-        <div className={styles.fill} style={{ transform: `scaleX(${done / tasks.length})` }} />
+        <div className={styles.fill} style={{ transform: `scaleX(${done.length / tasks.length})` }}>
+          {done.length > 0 && <span key={done.length} className={styles.sheen} />}
+        </div>
       </div>
 
-      {visibleTasks.length > 0 ? (
+      {todo.length > 0 ? (
         <ul className={styles.list}>
-          {visibleTasks.map(task => (
+          {todo.map(task => (
             <TaskItem key={task.id} task={task} toggleTask={toggleTask} removeTask={removeTask} />
           ))}
         </ul>
       ) : (
-        <p className={styles.filterEmpty}>
-          {filter === 'completed' ? 'No finished tasks yet.' : 'Nothing left to do.'}
-        </p>
+        <p className={styles.allClear}>Nothing left to do.</p>
+      )}
+
+      {done.length > 0 && (
+        <div className={styles.doneGroup}>
+          <button
+            type="button"
+            className={styles.doneToggle}
+            aria-expanded={showDone}
+            aria-controls="done-list"
+            onClick={() => setShowDone(open => !open)}
+          >
+            Done ({done.length})
+            <svg className={styles.chevron} viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          {showDone && (
+            <ul id="done-list" className={styles.list}>
+              {done.map(task => (
+                <TaskItem key={task.id} task={task} toggleTask={toggleTask} removeTask={removeTask} />
+              ))}
+            </ul>
+          )}
+        </div>
       )}
 
       <button type="button" className={styles.clear} onClick={clearAllTasks}>

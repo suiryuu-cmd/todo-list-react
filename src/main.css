@@ -10,6 +10,7 @@
   --danger: #f2686c;
   --radius: 14px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --font-display: 'Bricolage Grotesque Variable', 'Quicksand Variable', system-ui, sans-serif;
 
   color-scheme: dark;
   font-family: 'Quicksand Variable', system-ui, sans-serif;
@@ -70,6 +71,34 @@ button:disabled {
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* List changes run through document.startViewTransition (see TaskProvider) */
+::view-transition-group(*) {
+  animation-duration: 420ms;
+  animation-timing-function: var(--ease-out);
+}
+
+::view-transition-new(*):only-child {
+  animation: vt-enter 360ms var(--ease-out);
+}
+
+::view-transition-old(*):only-child {
+  animation: vt-exit 200ms ease-in forwards;
+}
+
+@keyframes vt-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+}
+
+@keyframes vt-exit {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
