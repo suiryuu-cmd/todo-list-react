@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useTasksContext } from '../../context/tasksContext';
+import { useTasks } from '../../context/taskContext';
 import styles from './index.module.css';
 
 export const TaskForm: React.FC = () => {
   const [taskName, setTaskName] = useState('');
-  const { addTask } = useTasksContext();
+  const { addTask } = useTasks();
 
   const handleAddTask = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

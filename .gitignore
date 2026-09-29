@@ -28,6 +28,11 @@ dist-ssr
 .env.*
 !.env.example
 
+# Test and build caches
+coverage/
+*.tsbuildinfo
+.eslintcache
+
 # Local tooling
 .claude/
 .impeccable/

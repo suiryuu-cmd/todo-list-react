@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import styles from './index.module.css';
 import { TaskItem } from '../TaskItem';
 import { EmptyState } from './EmptyState';
-import { useTasksContext } from '../../context/tasksContext';
+import { useTasks } from '../../context/taskContext';
+import { isDone } from '../../tasks';
 
 export const TaskList: React.FC = () => {
-  const { tasks, clearAllTasks } = useTasksContext();
+  const { tasks, clearAllTasks } = useTasks();
   const [showDone, setShowDone] = useState(true);
 
   if (tasks.length === 0) return <EmptyState />;
 
-  const todo = tasks.filter(task => !task.completed);
-  const done = tasks.filter(task => task.completed);
+  const todo = tasks.filter(task => !isDone(task));
+  const done = tasks.filter(isDone);
 
   return (
     <section className={styles.section} aria-labelledby="task-status">
@@ -53,7 +54,14 @@ export const TaskList: React.FC = () => {
           >
             Done ({done.length})
             <svg className={styles.chevron} viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M4 6l4 4 4-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
           {showDone && (

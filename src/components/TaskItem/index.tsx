@@ -1,29 +1,32 @@
 import React from 'react';
-import type { Task } from '../../types';
-import { useTasksContext } from '../../context/tasksContext';
+import { isDone, type Task } from '../../tasks';
+import { useTasks } from '../../context/taskContext';
 import styles from './index.module.css';
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
 
 export const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
-  const { toggleTask, removeTask } = useTasksContext();
+  const { toggleTask, removeTask } = useTasks();
+  const done = isDone(task);
 
   return (
     <li
-      className={task.completed ? `${styles.item} ${styles.completed}` : styles.item}
+      className={done ? `${styles.item} ${styles.completed}` : styles.item}
       style={{ viewTransitionName: `task-${task.id}` }}
     >
       <label className={styles.main}>
         <input
           type="checkbox"
           className={styles.check}
-          checked={task.completed}
+          checked={done}
           onChange={() => toggleTask(task.id)}
         />
         <span className={styles.text}>
           <span className={styles.name}>{task.name}</span>
-          {task.completed && <span className={styles.meta}>Done {formatDate(task.dateCompleted)}</span>}
+          {task.completedAt && (
+            <span className={styles.meta}>Done {formatDate(task.completedAt)}</span>
+          )}
         </span>
       </label>
       <button
